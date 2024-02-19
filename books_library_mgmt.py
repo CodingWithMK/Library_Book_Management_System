@@ -2,7 +2,7 @@ class Library:
     def __init__(self):
 
         self.books = []
-        self.remove_book_list = []
+        self.removed_book_list = []
 
         print("Welcome to the Python Library. Below you can find our Menu for several Tasks.\n***MENU***\n1) List Books\n2) Add Book\n3) Remove Book\n")
 
@@ -57,17 +57,26 @@ class Library:
 
     def remove_book(self, remove_name):
         with open('books.txt', 'a+') as file:
-            for lines in file:
-                remove_books = self.remove_book_list.copy(lines)
-                if remove_name in remove_books:
-                    updated_books_list = self.remove_book_list.remove(remove_name)
-                    # Write the updated books list back into the file
-                    file.seek(0)
-                    contents = "\n".join(updated_books_list)
-                    file.truncate()
-                    file.write(contents + '\n')
+            removed_books_list = file.readlines()
+            
+            # Remove book from 'removed_books_list' if existing
+            removed = False
+            updated_books_list = []
+            for line in removed_books_list:
+                if remove_name not in line:
+                    updated_books_list.append(line)
                 else:
-                    print(f"The book {remove_name} does not exist in the library.")
+                    removed = True
+
+            if removed:
+                # Overwrite 'books.txt' file with the updated content in 'updated_books_list'
+                file.seek(0)
+                file.truncate()
+                for item in updated_books_list:
+                    file.write(item)  
+                print(f"The Book '{remove_name}' has been removed succesfully.\n")
+            else:
+                    print(f"The book '{remove_name}' does not exist in the library.")
             
 if __name__ == "__main__":
     Library()
