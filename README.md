@@ -14,3 +14,5 @@ ENJOY!
 3. Book Remove Method
 
 
+P.S.: To the Global AI Hub Mentors. I will work further on this project and update the code for the GUI here accordingly to improve and fix there are any problems.
+
