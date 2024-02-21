@@ -2,7 +2,6 @@ class Library:
     def __init__(self):
 
         self.books = []
-        self.removed_book_list = []
 
         print("Welcome to the Python Library. Below you can find our Menu for several Tasks.\n***MENU***\n1) List Books\n2) Add Book\n3) Remove Book\n")
 
@@ -37,11 +36,6 @@ class Library:
         author = new_book_list[1]
         year = new_book_list[2]
         pages = new_book_list[3:]
-        
-        # full_book_info = ", ".join([title, author, str(year), ', '.join(map(str, pages))])
-        # self.books.append(full_book_info)
-        # with open('books.txt', 'a+') as file:
-        #     file.write('\n' + full_book_info)
 
         new_book_dict = {
             "title": title,
@@ -56,55 +50,20 @@ class Library:
             print('books.txt file updated succesfully.')
 
     def remove_book(self, remove_name):
-        with open('books.txt', 'a+') as file:
-            removed_books_list = file.readlines()
-            
-            # Remove book from 'removed_books_list' if existing
-            removed = False
-            updated_books_list = []
-            for line in removed_books_list:
-                if remove_name not in line:
-                    updated_books_list.append(line)
-                else:
-                    removed = True
+        with open('books.txt', 'r') as file:
+            removed_books_list = [line.strip() for line in file]
 
-            if removed:
+            updated_books_list = [book for book in removed_books_list if remove_name not in book] 
+
+            if len(updated_books_list) < len(removed_books_list):
                 # Overwrite 'books.txt' file with the updated content in 'updated_books_list'
                 file.seek(0)
-                file.truncate()
-                for item in updated_books_list:
-                    file.write(item)  
+                with open('books.txt', 'w') as file:
+                    for line in updated_books_list:
+                        file.write(line + '\n')  
                 print(f"The Book '{remove_name}' has been removed succesfully.\n")
             else:
-                    print(f"The book '{remove_name}' does not exist in the library.")
+                print(f"The book '{remove_name}' does not exist in the library.\n")
             
 if __name__ == "__main__":
     Library()
-        
-
-
-
-# library = Library()
-
-# # library.open_file()
-# library.list_books()
-# print('\nAdd a new Book:\nTitle: ')
-# title = input()
-# print('Author: ')
-# author = input()
-# print('Year: ')
-# year = int(input())
-# library.add_book(title, author, year)
-
-# print('\nList of Books after adding the new one:\n')
-# library.list_books()
-
-# print('\nRemove a Book by its Index (enter q to exit):\nIndex: ')
-# while True:
-#     try:
-#         input = str(input())
-#         if input == -1:
-#             break
-#         library.remove_book(input)
-#     except ValueError:
-#         print("\nInvalid Input!\nPlease enter an integer value.")
